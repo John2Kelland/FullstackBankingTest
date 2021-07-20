@@ -1,3 +1,29 @@
 <h1>Transactions</h1>
 
 <p><br />Creating my region of the website</p>
+
+<div class="input-group" style="width:100%">
+  <input type="text" style="margin:5px; width:36%" id="accId" name="accountId" placeholder="Account ID" />
+  <input type="text" style="margin:5px; width:36%" id="transAmt" name="transactionAmount" placeholder="Transaction Amount" />
+  <button class="btn btn-primary" style="margin:5px; float:right; width:8%" (click)="incrementCounter()">Withdraw</button>
+  <button class="btn btn-primary" style="margin:5px; float:right; width:8%" (click)="incrementCounter()">Deposit</button>
+</div>
+
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="accounts">
+  <thead>
+    <tr>
+      <th>Username</th>
+      <th>Account ID</th>
+      <th>Account Name</th>
+      <th>Balance</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let account of accounts">
+      <td>{{ account.username }}</td>
+      <td>{{ account.accountId }}</td>
+      <td>{{ account.accountName }}</td>
+      <td>{{ account.balance }}</td>
+    </tr>
+  </tbody>
+</table>

@@ -1,3 +1,30 @@
 <h1>Accounts</h1>
 
 <p><br />Creating my region of the website</p>
+
+<div class="input-group" style="width:100%">
+  <input type="text" style="margin:5px; width:32%" id="accId" name="accountId" placeholder="Account ID" #accId />
+  <input type="text" style="margin:5px; width:32%" id="accName" name="accountName" placeholder="Account Name" #accName />
+  <button type="submit" class="btn btn-primary" style="margin:5px; float:right; width:8%" (click)="addAccount(accId.value, accName.value)">Add</button>
+  <button type="submit" class="btn btn-primary" style="margin:5px; float:right; width:8%" (click)="incrementCounter()">Update</button>
+  <button type="submit" class="btn btn-primary" style="margin-left:auto; margin:5px; width:8%" (click)="incrementCounter()">Delete</button>
+</div>
+
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="accounts">
+  <thead>
+    <tr>
+      <th>Username</th>
+      <th>Account ID</th>
+      <th>Account Name</th>
+      <th>Balance</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let account of accounts">
+      <td>{{ account.username }}</td>
+      <td>{{ account.accountId }}</td>
+      <td>{{ account.accountName }}</td>
+      <td>{{ account.balance }}</td>
+    </tr>
+  </tbody>
+</table>
