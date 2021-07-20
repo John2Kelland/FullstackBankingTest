@@ -1,0 +1,44 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Radancy_Bank_Challenge.Models;
+using Radancy_Bank_Challenge.Utilities;
+
+namespace Radancy_Bank_Challenge.Controllers
+{
+    [ApiController]
+    [Route("[controller]")]
+    public class SystemUsersController : ControllerBase
+    {
+        private readonly ILogger<SystemUsersController> _logger;
+
+        public SystemUsersController(ILogger<SystemUsersController> logger)
+        {
+            _logger = logger;
+        }
+
+        [HttpPost]
+        public IActionResult Post([FromBody] string systemUserDetails)
+        {
+
+            // add a record
+
+            return Ok();
+        }
+
+        [HttpGet]
+        public IEnumerable<SystemUser> Get()
+        {
+            List<SystemUser> systemUsers = new List<SystemUser>();
+            systemUsers.Add(new SystemUser("John2K", "PasswordTest"));
+
+            // figure out how to handle zero system users
+            // UserAccount[] filteredSystemUsers = GlobalData.UserAccounts.Where(x => x.Username.Equals(GlobalData.ActiveSystemUser)).ToArray() ?? new UserAccount[1];
+
+            return systemUsers;
+        }
+    }
+}
