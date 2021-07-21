@@ -7,6 +7,9 @@ namespace Radancy_Bank_Challenge.Models
 {
     public class UserAccount
     {
+        #region Constructors
+
+        // constructor overloading - set initial balance as 100 if a value is not provided
         public UserAccount(string username, int accountId, string accountName)
         {
             this.Username = username;
@@ -15,6 +18,7 @@ namespace Radancy_Bank_Challenge.Models
             this.Balance = 100;
         }
 
+        // constructor overloading - accept the initial balance input if a value is provided
         public UserAccount(string username, int accountId, string accountName, double balance)
         {
             this.Username = username;
@@ -23,6 +27,10 @@ namespace Radancy_Bank_Challenge.Models
             this.Balance = balance;
         }
 
+        #endregion
+
+        #region Properties
+
         public string Username { get; set; }
 
         public int AccountId { get; set; }
@@ -30,5 +38,7 @@ namespace Radancy_Bank_Challenge.Models
         public string AccountName { get; set; }
 
         public double Balance { get; set; }
+
+        #endregion
     }
 }
