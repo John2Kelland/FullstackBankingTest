@@ -7,20 +7,18 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
-import { CounterComponent } from './counter/counter.component';
-import { TransactionsComponent } from './transactions/transactions.component';
-import { AccountsComponent } from './accounts/accounts.component';
 import { UsersComponent } from './users/users.component';
+import { AccountsComponent } from './accounts/accounts.component';
+import { TransactionsComponent } from './transactions/transactions.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavMenuComponent,
     HomeComponent,
-    CounterComponent,
-    TransactionsComponent,
+    UsersComponent,
     AccountsComponent,
-    UsersComponent
+    TransactionsComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -28,10 +26,9 @@ import { UsersComponent } from './users/users.component';
     FormsModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'counter', component: CounterComponent },
-      { path: 'transactions', component: TransactionsComponent },
+      { path: 'users', component: UsersComponent },
       { path: 'accounts', component: AccountsComponent },
-      { path: 'users', component: UsersComponent }
+      { path: 'transactions', component: TransactionsComponent }
     ])
   ],
   providers: [],

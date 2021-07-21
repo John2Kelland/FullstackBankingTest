@@ -3,11 +3,12 @@
 <p><br />Creating my region of the website</p>
 
 <div class="input-group" style="width:100%">
-  <input type="text" style="margin:5px; width:32%" id="accId" name="accountId" placeholder="Account ID" #accId />
-  <input type="text" style="margin:5px; width:32%" id="accName" name="accountName" placeholder="Account Name" #accName />
-  <button type="submit" class="btn btn-primary" style="margin:5px; float:right; width:8%" (click)="addAccount(accId.value, accName.value)">Add</button>
-  <button type="submit" class="btn btn-primary" style="margin:5px; float:right; width:8%" (click)="incrementCounter()">Update</button>
-  <button type="submit" class="btn btn-primary" style="margin-left:auto; margin:5px; width:8%" (click)="incrementCounter()">Delete</button>
+  <input type="text" style="margin:5px; margin-left:0px; width:21%" id="accId" name="accountId" placeholder="Account ID" #accId />
+  <input type="text" style="margin:5px; width:21%" id="accName" name="accountName" placeholder="Account Name" #accName />
+  <input type="text" style="margin:5px; width:21%" id="initBal" name="initialBalance" placeholder="Initial Balance" #initTrans />
+  <button type="submit" class="btn btn-primary" style="margin:5px; float:right; width:8%" (click)="addAccount(accId.value, accName.value, initial.value)">Add</button>
+  <button type="submit" class="btn btn-primary" style="margin:5px; float:right; width:8%" (click)="updateAccount(accId.value, accName.value)">Update</button>
+  <button type="submit" class="btn btn-primary" style="margin-left:auto; margin:5px; width:8%" (click)="deleteAccount(accId.value)">Delete</button>
 </div>
 
 <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="accounts">
