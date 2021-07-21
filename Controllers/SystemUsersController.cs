@@ -33,7 +33,7 @@ namespace Radancy_Bank_Challenge.Controllers
         public IEnumerable<SystemUser> Get()
         {
             List<SystemUser> systemUsers = new List<SystemUser>();
-            systemUsers.Add(new SystemUser("John2K", "PasswordTest"));
+            systemUsers.Add(new SystemUser("John2K", "PasswordTest", "testemail@testemailaddress.com"));
 
             // figure out how to handle zero system users
             // UserAccount[] filteredSystemUsers = GlobalData.UserAccounts.Where(x => x.Username.Equals(GlobalData.ActiveSystemUser)).ToArray() ?? new UserAccount[1];

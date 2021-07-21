@@ -11,13 +11,13 @@ namespace Radancy_Bank_Challenge.Services
     {
         #region System User Modification Services
 
-        public bool AddSystemUser(string username, string password)
+        public bool AddSystemUser(string username, string password, string email)
         {
             bool userAdded = false;
 
             try
             {
-                GlobalData.SystemUsers.Add(new SystemUser(username, password));
+                GlobalData.SystemUsers.Add(new SystemUser(username, password, email));
 
                 userAdded = true;
             }
