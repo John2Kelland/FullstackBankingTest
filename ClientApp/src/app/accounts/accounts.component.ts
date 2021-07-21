@@ -25,8 +25,8 @@ export class AccountsComponent {
       .subscribe(result => { this.accounts = result; }, error => console.error(error));
   }
 
-  public addAccount(accId: string, accName: string) {
-    this.Http.post(this.BaseUrl + 'useraccounts', new String("AccountID:"+accId+",AccountName:"+accName), this.HttpOptions)
+  public addAccount(accId: string, accName: string, initBal: string) {
+    this.Http.post(this.BaseUrl + 'useraccounts', new String("AccountID:"+accId+",AccountName:"+accName+",InitialBalance:"+initBal), this.HttpOptions)
       .subscribe(result => { alert("Posted" + JSON.stringify(result)); }, error => console.error(error));
   }
 }

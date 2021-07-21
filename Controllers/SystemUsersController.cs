@@ -23,8 +23,24 @@ namespace Radancy_Bank_Challenge.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] string systemUserDetails)
         {
+            string[] details = systemUserDetails.Split(",");
+
+            string email = details[0].Split("Email:")[1];
+            string username = details[1].Split("Username:")[1];
+            string password = details[2].Split("Password:")[1];
+
+            SystemUser newSystemUser = new SystemUser(email, username, password);
 
             // add a record
+            if (GlobalData.SystemUsers != null)
+            {
+                GlobalData.SystemUsers.Add(newSystemUser);
+            }
+            else
+            {
+                List<SystemUser> systemUsers = new List<SystemUser>() { newSystemUser };
+                GlobalData.SystemUsers = systemUsers;
+            }
 
             return Ok();
         }

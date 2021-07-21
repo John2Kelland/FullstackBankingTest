@@ -10,6 +10,7 @@ import { HomeComponent } from './home/home.component';
 import { UsersComponent } from './users/users.component';
 import { AccountsComponent } from './accounts/accounts.component';
 import { TransactionsComponent } from './transactions/transactions.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { TransactionsComponent } from './transactions/transactions.component';
     HomeComponent,
     UsersComponent,
     AccountsComponent,
-    TransactionsComponent
+    TransactionsComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -28,7 +30,8 @@ import { TransactionsComponent } from './transactions/transactions.component';
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'users', component: UsersComponent },
       { path: 'accounts', component: AccountsComponent },
-      { path: 'transactions', component: TransactionsComponent }
+      { path: 'transactions', component: TransactionsComponent },
+      { path: 'footer', component: FooterComponent }
     ])
   ],
   providers: [],
