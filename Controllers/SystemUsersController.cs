@@ -29,6 +29,8 @@ namespace Radancy_Bank_Challenge.Controllers
             string username = details[1].Split("Username:")[1];
             string password = details[2].Split("Password:")[1];
 
+            if (email == "") { return BadRequest("Please enter a valid email address."); }
+
             SystemUser newSystemUser = new SystemUser(email, username, password);
 
             // add a record
