@@ -26,7 +26,7 @@ export class UsersComponent {
   }
 
   public addSystemProfile(email: string, username: string, password: string) {
-    this.Http.post(this.BaseUrl + 'systemusers', String("Email:" + email + ",Username:" + username + ",Password:" + password), this.HttpOptions)
+    this.Http.post(this.BaseUrl + 'systemusers', new String("Email:" + email + ",Username:" + username + ",Password:" + password), this.HttpOptions)
       .subscribe(result => { alert("Posted" + JSON.stringify(result)); }, error => console.error(error));
   }
 }
