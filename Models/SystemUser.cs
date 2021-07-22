@@ -9,11 +9,11 @@ namespace Radancy_Bank_Challenge.Models
     {
         #region Constructor
 
-        public SystemUser(string username, string password, string email)
+        public SystemUser(string email, string username, string password)
         {
+            this.Email = email;
             this.Username = username;
             this.Password = password;
-            this.Email = email;
         }
 
         #endregion

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Radancy_Bank_Challenge.Models;
 using Radancy_Bank_Challenge.Utilities;
+using Radancy_Bank_Challenge.Services;
 
 namespace Radancy_Bank_Challenge.Controllers
 {
@@ -20,6 +21,31 @@ namespace Radancy_Bank_Challenge.Controllers
             _logger = logger;
         }
 
+        [HttpPut]
+        public IActionResult Put([FromBody] string systemUserDetails)
+        {
+            string[] details = systemUserDetails.Split(",");
+
+            string username = details[0].Split("Username:")[1];
+            string password = details[1].Split("Password:")[1];
+
+            if (username.Equals("signoutrequest") && password.Equals("signoutrequest"))
+            {
+                GlobalData.ActiveSystemUser = "";
+                return Ok();
+            }
+
+            if (!SystemUserServiceCore.ValidateUserCredentials(username, password))
+            {
+                return BadRequest(GlobalConstants.ErrorMessages.INVALIDUSERCREDENTIALS);
+            }
+
+            // the user has been validated, so set the active system user in global data
+            GlobalData.ActiveSystemUser = username;
+
+            return Ok();
+        }
+
         [HttpPost]
         public IActionResult Post([FromBody] string systemUserDetails)
         {
@@ -29,34 +55,27 @@ namespace Radancy_Bank_Challenge.Controllers
             string username = details[1].Split("Username:")[1];
             string password = details[2].Split("Password:")[1];
 
-            if (email == "") { return BadRequest("Please enter a valid email address."); }
+            if (!SystemUserServiceCore.ValidateSystemUserEmail(email)) { return BadRequest("Please enter a valid email address."); }
 
-            SystemUser newSystemUser = new SystemUser(email, username, password);
-
-            // add a record
-            if (GlobalData.SystemUsers != null)
+            if (SystemUserServiceCore.AddSystemUser(email, username, password))
             {
-                GlobalData.SystemUsers.Add(newSystemUser);
-            }
+                return Ok();
+            } 
             else
             {
-                List<SystemUser> systemUsers = new List<SystemUser>() { newSystemUser };
-                GlobalData.SystemUsers = systemUsers;
+                return BadRequest(GlobalConstants.ErrorMessages.UNEXPECTEDNEWUSERFAILURE);
             }
-
-            return Ok();
         }
 
         [HttpGet]
         public IEnumerable<SystemUser> Get()
         {
-            List<SystemUser> systemUsers = new List<SystemUser>();
-            systemUsers.Add(new SystemUser("John2K", "PasswordTest", "testemail@testemailaddress.com"));
+            if (GlobalData.SystemUsers == null)
+            {
+                GlobalData.SystemUsers = new List<SystemUser>();
+            }
 
-            // figure out how to handle zero system users
-            // UserAccount[] filteredSystemUsers = GlobalData.UserAccounts.Where(x => x.Username.Equals(GlobalData.ActiveSystemUser)).ToArray() ?? new UserAccount[1];
-
-            return systemUsers;
+            return GlobalData.SystemUsers;
         }
     }
 }

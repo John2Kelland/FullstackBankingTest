@@ -4,9 +4,12 @@
 
 <p><br /><br />Sign in to manage your accounts:</p>
 <div class="input-group" style="width:100%">
-  <input type="text" style="margin:5px; margin-left:0px; width:36%" id="usernm" name="username" placeholder="Username" #username />
-  <input type="password" style="margin:5px; margin-left:15px; width:36%" id="passwd" name="password" placeholder="Password" minlength="8" maxlength="20" #password />
-  <button class="btn btn-primary" style="margin:5px; float:right; width:8%" (click)="accessSystemProfile(username.value, password.value)">Sign In</button>
+  <input type="text" style="margin:5px; margin-left:0px; width:36%" id="sgnusernm" name="username" placeholder="Username" #signinusername />
+  <input type="password" style="margin:5px; margin-left:15px; width:36%" id="sgnpasswd" name="password" placeholder="Password" minlength="8" maxlength="20" #signinpassword />
+  <button class="btn btn-primary" style="margin:5px; float:right; width:8%" (click)="accessSystemProfile(signinusername.value, signinpassword.value)">Sign In</button>
+</div>
+<div class="input-group" style="width:100%">
+  <button class="btn btn-primary" style="margin:5px; margin-left:0px; float:right; width:8%" (click)="accessSystemProfile('signoutrequest','signoutrequest')">Sign Out</button>
 </div>
 
 <p><br /><br />Don't have an account?  Join the Radancy Bank family today!</p>

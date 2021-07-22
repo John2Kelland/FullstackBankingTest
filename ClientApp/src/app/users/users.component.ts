@@ -27,8 +27,35 @@ export class UsersComponent {
 
   public addSystemProfile(email: string, username: string, password: string) {
     this.Http.post(this.BaseUrl + 'systemusers', new String("Email:" + email + ",Username:" + username + ",Password:" + password), this.HttpOptions)
-      .subscribe(result => { alert("Posted" + JSON.stringify(result)); }, error => console.error(error));
-    alert("Profile Added");
+      .subscribe(result => {
+        alert("Profile successfully added!");
+      }, error => {
+        alert("There was a problem registering this user information.");
+        console.error(error);
+      }
+     );
+
+    (document.getElementById('email') as HTMLInputElement).value = "";
+    (document.getElementById('usernm') as HTMLInputElement).value = "";
+    (document.getElementById('passwd') as HTMLInputElement).value = "";
+  }
+
+  public accessSystemProfile(username: string, password: string) {
+    this.Http.put(this.BaseUrl + 'systemusers', new String("Username:" + username + ",Password:" + password), this.HttpOptions)
+      .subscribe(result => {
+        if (username == "signoutrequest") {
+          alert("Sign-out was successful!");
+        } else {
+          alert("Access successfully granted!");
+        }
+      }, error => {
+        alert("The provided credentials were not recognized.");
+        console.error(error);
+      }
+    );
+
+    (document.getElementById('sgnusernm') as HTMLInputElement).value = "";
+    (document.getElementById('sgnpasswd') as HTMLInputElement).value = "";
   }
 }
 
