@@ -6,6 +6,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Radancy_Bank_Challenge.Models;
 using Radancy_Bank_Challenge.Utilities;
+using System.Net.Http.Headers;
+using Radancy_Bank_Challenge.Services;
 
 namespace Radancy_Bank_Challenge.Controllers
 {
@@ -23,38 +25,72 @@ namespace Radancy_Bank_Challenge.Controllers
         [HttpGet]
         public IEnumerable<UserAccount> Get()
         {
-            List<UserAccount> userAccounts = new List<UserAccount>();
-            userAccounts.Add(new UserAccount("John2K", 1002347991, "Sample Account", 2000));
+            if (GlobalData.UserAccounts == null)
+            {
+                GlobalData.UserAccounts = new List<UserAccount>();
+            }
 
-            // figure out how to handle zero user accounts
-            // UserAccount[] filteredUserAccounts = GlobalData.UserAccounts.Where(x => x.Username.Equals(GlobalData.ActiveSystemUser)).ToArray() ?? new UserAccount[1];
-
-            return userAccounts;
+            return GlobalData.UserAccounts.Where(x => x.Username.Equals(GlobalData.ActiveSystemUser));
         }
 
         [HttpPost]
         public IActionResult Post([FromBody] string userAccountDetails)
         {
+            if (String.IsNullOrEmpty(GlobalData.ActiveSystemUser)) { return BadRequest(GlobalConstants.ErrorMessages.UNAUTHORIZEDACTIONATTEMPT); }
 
-            GlobalData.UserAccounts.Add(new UserAccount("John2K", 83742983, "Test Account"));
+            string[] details = userAccountDetails.Split(",");
 
-            return Ok();
+            string accountId = details[0].Split("AccountID:")[1];
+            string accountName = details[1].Split("AccountName:")[1];
+            double initialBalance = Convert.ToDouble(details[2].Split("InitialBalance:")[1]);
+
+            // check for a unique account ID and valid initial balance
+            if (!UserAccountServiceCore.ValidateUniqueAccountID(accountId)) { return BadRequest(GlobalConstants.ErrorMessages.DUPLICATEACCOUNTID); }
+            if (!UserAccountServiceCore.ValidateSufficientBalance(initialBalance)) { return BadRequest(GlobalConstants.ErrorMessages.INSUFFICIENTACCOUNTBALANCE); }
+
+            if (UserAccountServiceCore.AddUserAccount(accountId, accountName, initialBalance))
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(GlobalConstants.ErrorMessages.UNEXPECTEDNEWACCOUNTFAILURE);
+            }
         }
 
         [HttpPut]
         public IActionResult Put([FromBody] string userAccountDetails)
         {
-            // update a record
+            if (String.IsNullOrEmpty(GlobalData.ActiveSystemUser)) { return BadRequest(GlobalConstants.ErrorMessages.UNAUTHORIZEDACTIONATTEMPT); }
 
-            return Ok();
+            string[] details = userAccountDetails.Split(",");
+
+            string accountId = details[0].Split("AccountID:")[1];
+            string accountName = details[1].Split("AccountName:")[1];
+
+            if (UserAccountServiceCore.UpdateUserAccount(accountId, accountName))
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(GlobalConstants.ErrorMessages.UNEXPECTEDACCOUNTUPDATEFAILURE);
+            }
         }
 
         [HttpDelete]
-        public IActionResult Delete([FromBody] string userAccountDetails)
+        public IActionResult Delete([FromBody] HttpHeaders httpHeaders)
         {
-            // delete a record
+            if (String.IsNullOrEmpty(GlobalData.ActiveSystemUser)) { return BadRequest(GlobalConstants.ErrorMessages.UNAUTHORIZEDACTIONATTEMPT); }
 
-            return Ok();
+            if (UserAccountServiceCore.DeleteUserAccount("teststring"))
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(GlobalConstants.ErrorMessages.UNEXPECTEDACCOUNTDELETIONFAIlURE);
+            }
         }
     }
 }

@@ -21,6 +21,17 @@ namespace Radancy_Bank_Challenge.Controllers
             _logger = logger;
         }
 
+        [HttpGet]
+        public IEnumerable<SystemUser> Get()
+        {
+            if (GlobalData.SystemUsers == null)
+            {
+                GlobalData.SystemUsers = new List<SystemUser>();
+            }
+
+            return GlobalData.SystemUsers;
+        }
+
         [HttpPut]
         public IActionResult Put([FromBody] string systemUserDetails)
         {
@@ -55,7 +66,7 @@ namespace Radancy_Bank_Challenge.Controllers
             string username = details[1].Split("Username:")[1];
             string password = details[2].Split("Password:")[1];
 
-            if (!SystemUserServiceCore.ValidateSystemUserEmail(email)) { return BadRequest("Please enter a valid email address."); }
+            if (!SystemUserServiceCore.ValidateSystemUserEmail(email)) { return BadRequest(GlobalConstants.ErrorMessages.INVALIDEMAILFORMAT); }
 
             if (SystemUserServiceCore.AddSystemUser(email, username, password))
             {
@@ -65,17 +76,6 @@ namespace Radancy_Bank_Challenge.Controllers
             {
                 return BadRequest(GlobalConstants.ErrorMessages.UNEXPECTEDNEWUSERFAILURE);
             }
-        }
-
-        [HttpGet]
-        public IEnumerable<SystemUser> Get()
-        {
-            if (GlobalData.SystemUsers == null)
-            {
-                GlobalData.SystemUsers = new List<SystemUser>();
-            }
-
-            return GlobalData.SystemUsers;
         }
     }
 }
