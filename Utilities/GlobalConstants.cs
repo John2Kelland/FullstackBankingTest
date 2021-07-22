@@ -29,6 +29,12 @@ namespace Radancy_Bank_Challenge.Utilities
             }
         }
 
+        public class Messages
+        {
+            public static string USERLOGGEDIN { get { return "You are currently signed in as: "; } }
+            public static string USERNOTLOGGEDIN { get { return "You are not currently signed in."; } }
+        }
+
         public class ErrorMessages
         {
             public static string UNEXPECTEDNEWUSERFAILURE { get { return "An unexpected exception has occurred. The new user could not be added to the system."; } }

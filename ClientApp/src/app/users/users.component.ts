@@ -8,7 +8,6 @@ import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 })
 
 export class UsersComponent {
-  public systemUsers: SystemUser[];
   public Http: HttpClient;
   public BaseUrl: string;
   public HttpOptions = {
@@ -20,9 +19,12 @@ export class UsersComponent {
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
     this.Http = http;
     this.BaseUrl = baseUrl;
+    const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
 
-    http.get<SystemUser[]>(baseUrl + 'systemusers')
-      .subscribe(result => { this.systemUsers = result; }, error => console.error(error));
+    http.get<string>(baseUrl + 'systemusers', { headers, responseType: 'text' as 'json' })
+      .subscribe(result => {
+        (document.getElementById('activeUserMsg') as HTMLInputElement).value = result;
+      }, error => console.error(error));
   }
 
   public addSystemProfile(email: string, username: string, password: string) {

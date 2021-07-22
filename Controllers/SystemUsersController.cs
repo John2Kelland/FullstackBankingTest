@@ -22,14 +22,17 @@ namespace Radancy_Bank_Challenge.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<SystemUser> Get()
+        public string Get()
         {
-            if (GlobalData.SystemUsers == null)
+            // return a sign-in status string to be displayed by the html of the Profile page
+            if (String.IsNullOrEmpty(GlobalData.ActiveSystemUser))
             {
-                GlobalData.SystemUsers = new List<SystemUser>();
+                return GlobalConstants.Messages.USERNOTLOGGEDIN;
             }
-
-            return GlobalData.SystemUsers;
+            else
+            {
+                return GlobalConstants.Messages.USERLOGGEDIN + GlobalData.ActiveSystemUser;
+            }
         }
 
         [HttpPut]
