@@ -11,11 +11,14 @@ namespace Radancy_Bank_Challenge.Services
     {
         #region User Account Modification Services
 
-        public static bool AddUserAccount(string accountId, string accountName, double initialBalance)
+        public static bool AddUserAccount(string accountId, string accountName, double initialBalance, out string errorMessage)
         {
-            bool accountAdded = false;
+            bool accountAdded = false; errorMessage = "";
 
             UserAccount newUserAccount = new UserAccount(GlobalData.ActiveSystemUser, accountId, accountName, initialBalance);
+
+            if (!ValidateSufficientBalance(newUserAccount)) { errorMessage = GlobalConstants.ErrorMessages.INSUFFICIENTACCOUNTBALANCE; return accountAdded; }
+            if (!ValidateUniqueAccountID(newUserAccount)) { errorMessage = GlobalConstants.ErrorMessages.DUPLICATEACCOUNTID; return accountAdded; }
 
             // add a record
             try
@@ -31,7 +34,7 @@ namespace Radancy_Bank_Challenge.Services
                 }
                 accountAdded = true;
             }
-            catch { }
+            catch { errorMessage = GlobalConstants.ErrorMessages.UNEXPECTEDNEWACCOUNTFAILURE; }
 
             return accountAdded;
         }
@@ -68,16 +71,14 @@ namespace Radancy_Bank_Challenge.Services
 
         #region User Account Validation Rules
 
-        public static bool ValidateUniqueAccountID(string accountID)
+        public static bool ValidateUniqueAccountID(UserAccount userAccount)
         {
-            bool uniqueAccountID = true;
-
-            return uniqueAccountID;
+            return !GlobalData.UserAccounts.Where(x => x.Username.Equals(GlobalData.ActiveSystemUser)).Select(y => y.AccountId).ToList().Contains(userAccount.AccountId);
         }
 
-        public static bool ValidateSufficientBalance(double balance)
+        public static bool ValidateSufficientBalance(UserAccount userAccount)
         {
-            return balance >= 100;
+            return userAccount.Balance >= 100;
         }
 
         #endregion

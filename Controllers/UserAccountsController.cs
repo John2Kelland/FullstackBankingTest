@@ -44,17 +44,13 @@ namespace Radancy_Bank_Challenge.Controllers
             string accountName = details[1].Split("AccountName:")[1];
             double initialBalance = Convert.ToDouble(details[2].Split("InitialBalance:")[1]);
 
-            // check for a unique account ID and valid initial balance
-            if (!UserAccountServiceCore.ValidateUniqueAccountID(accountId)) { return BadRequest(GlobalConstants.ErrorMessages.DUPLICATEACCOUNTID); }
-            if (!UserAccountServiceCore.ValidateSufficientBalance(initialBalance)) { return BadRequest(GlobalConstants.ErrorMessages.INSUFFICIENTACCOUNTBALANCE); }
-
-            if (UserAccountServiceCore.AddUserAccount(accountId, accountName, initialBalance))
+            if (UserAccountServiceCore.AddUserAccount(accountId, accountName, initialBalance, out string errorMessage))
             {
                 return Ok();
             }
             else
             {
-                return BadRequest(GlobalConstants.ErrorMessages.UNEXPECTEDNEWACCOUNTFAILURE);
+                return BadRequest(errorMessage);
             }
         }
 
@@ -79,7 +75,7 @@ namespace Radancy_Bank_Challenge.Controllers
         }
 
         [HttpDelete]
-        public IActionResult Delete([FromBody] HttpHeaders httpHeaders)
+        public IActionResult Delete(string accountId)
         {
             if (String.IsNullOrEmpty(GlobalData.ActiveSystemUser)) { return BadRequest(GlobalConstants.ErrorMessages.UNAUTHORIZEDACTIONATTEMPT); }
 

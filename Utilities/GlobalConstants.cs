@@ -46,6 +46,10 @@ namespace Radancy_Bank_Challenge.Utilities
             public static string INVALIDEMAILFORMAT { get { return "Please verify the format of your email. Thank you!"; } }
             public static string DUPLICATEACCOUNTID { get { return "Please ensure that all accounts have unique ID numbers. Thank you!"; } }
             public static string INSUFFICIENTACCOUNTBALANCE { get { return "Accounts must maintain a balance of at least $100."; } }
+            public static string EXCEEDSMAXIMUMWITHDRAWALPERCENTAGE { get { return "A withdrawal cannot exceed 90% of the account balance."; } }
+            public static string EXCEEDSMAXIMUMDEPOSIT { get { return "A deposit cannot exceed $10,000."; } }
+            public static string UNRECOGNIZEDTRANSACTIONTYPE { get { return "The transaction type was not recognized. Please try again, and if the error persists, feel free to contact our support desk!"; } }
+            public static string INVALIDACCOUNTID { get { return "Please specify an existing account ID. Thank you!"; } }
         }
     }
 }

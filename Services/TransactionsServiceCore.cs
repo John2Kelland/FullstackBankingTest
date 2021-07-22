@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Radancy_Bank_Challenge.Models;
 using Radancy_Bank_Challenge.Utilities;
 
 namespace Radancy_Bank_Challenge.Services
@@ -10,28 +11,42 @@ namespace Radancy_Bank_Challenge.Services
     {
         #region Balance Modification Services
 
-        public bool ProcessDeposit(int accountID, int deposit)
+        public static bool ProcessWithdrawal(string accountId, double withdrawal, out string errorMessage)
         {
-            bool transactionSuccessful = false;
+            bool transactionSuccessful = false; errorMessage = "";
 
-            if (!ValidateMaximumDeposit(deposit)) { return transactionSuccessful; }
+            // copy the account being acted upon and pass it through validations
+            UserAccount userAccount = GlobalData.UserAccounts.Where(x => x.Username.Equals(GlobalData.ActiveSystemUser) && x.AccountId.Equals(accountId)).FirstOrDefault();
 
-            // sql update logic to change Accounts.BALANCE based on Accounts.ACCOUNT_ID
+            if (userAccount == null) { errorMessage = GlobalConstants.ErrorMessages.INVALIDACCOUNTID; return transactionSuccessful; }
+            if (!ValidateMaximumWithdrawal(userAccount.Balance, withdrawal)) { errorMessage = GlobalConstants.ErrorMessages.EXCEEDSMAXIMUMWITHDRAWALPERCENTAGE; return transactionSuccessful; }
+            if (!ValidateMinimumAccountBalance(userAccount.Balance - withdrawal)) { errorMessage = GlobalConstants.ErrorMessages.INSUFFICIENTACCOUNTBALANCE; return transactionSuccessful; }
+
+            // update the balance of the account being acted upon
+            try
+            {
+                GlobalData.UserAccounts.Where(x => x.Username.Equals(GlobalData.ActiveSystemUser) && x.AccountId.Equals(accountId)).ToList().ForEach(y => { y.Balance -= withdrawal; });
+                transactionSuccessful = true;
+            }
+            catch { }
 
             return transactionSuccessful;
         }
 
-        public bool ProcessWithdrawal(int accountID, int withdrawal)
+        public static bool ProcessDeposit(string accountId, double deposit, out string errorMessage)
         {
-            bool transactionSuccessful = false;
+            bool transactionSuccessful = false; errorMessage = "";
 
-            // sql query logic to pull account balance from accountID
-            int accountBalance = 0;
+            // validate the deposit amount against the maximum permissible value
+            if (!ValidateMaximumDeposit(deposit)) { errorMessage = GlobalConstants.ErrorMessages.EXCEEDSMAXIMUMDEPOSIT; return transactionSuccessful; }
 
-            if (!ValidateMaximumWithdrawal(accountBalance, withdrawal) ||
-                !ValidateMinimumAccountBalance(accountBalance - withdrawal)) { return transactionSuccessful; }
-
-            // sql update logic to change Accounts.BALANCE based on Accounts.ACCOUNT_ID
+            // udpate the balance of the account being acted upon
+            try
+            {
+                GlobalData.UserAccounts.Where(x => x.Username.Equals(GlobalData.ActiveSystemUser) && x.AccountId.Equals(accountId)).ToList().ForEach(y => { y.Balance += deposit; });
+                transactionSuccessful = true;
+            }
+            catch { }
 
             return transactionSuccessful;
         }
@@ -40,17 +55,17 @@ namespace Radancy_Bank_Challenge.Services
 
         #region Transaction Validation Rules
 
-        public bool ValidateMinimumAccountBalance(int remainingBalance)
+        public static bool ValidateMinimumAccountBalance(double remainingBalance)
         {
             return remainingBalance >= GlobalConstants.MinimumAccountBalance;
         }
 
-        public bool ValidateMaximumWithdrawal(int accountBalance, int withdrawal)
+        public static bool ValidateMaximumWithdrawal(double accountBalance, double withdrawal)
         {
             return withdrawal <= GlobalConstants.MaximumWithdrawalPercentage*accountBalance;
         }
 
-        public bool ValidateMaximumDeposit(int deposit)
+        public static bool ValidateMaximumDeposit(double deposit)
         {
             return deposit <= GlobalConstants.MaximumDeposit;
         }

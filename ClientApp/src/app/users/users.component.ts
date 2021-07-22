@@ -32,7 +32,7 @@ export class UsersComponent {
       .subscribe(result => {
         alert("Profile successfully added!");
       }, error => {
-        alert("There was a problem registering this user information.");
+        alert(error.error);
         console.error(error);
       }
      );
@@ -51,13 +51,15 @@ export class UsersComponent {
           alert("Access successfully granted!");
         }
       }, error => {
-        alert("The provided credentials were not recognized.");
+        alert(error.error);
         console.error(error);
       }
     );
 
     (document.getElementById('sgnusernm') as HTMLInputElement).value = "";
     (document.getElementById('sgnpasswd') as HTMLInputElement).value = "";
+
+    location.reload(false);
   }
 }
 

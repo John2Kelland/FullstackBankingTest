@@ -3,10 +3,10 @@
 <p><br />Creating my region of the website</p>
 
 <div class="input-group" style="width:100%">
-  <input type="text" style="margin:5px; margin-left:0px; width:36%" id="accId" name="accountId" placeholder="Account ID" />
-  <input type="text" style="margin:5px; width:36%" id="transAmt" name="transactionAmount" placeholder="Transaction Amount" />
-  <button class="btn btn-primary" style="margin:5px; float:right; width:8%" (click)="incrementCounter()">Withdraw</button>
-  <button class="btn btn-primary" style="margin:5px; float:right; width:8%" (click)="incrementCounter()">Deposit</button>
+  <input type="text" style="margin:5px; margin-left:0px; width:36%" id="accId" name="accountId" placeholder="Account ID" #accId />
+  <input type="text" style="margin:5px; width:36%" id="transAmt" name="transactionAmount" placeholder="Transaction Amount" #transAmt />
+  <button class="btn btn-primary" style="margin:5px; float:right; width:8%" (click)="processTransaction(accId.value, transAmt.value, 'withdrawal')">Withdraw</button>
+  <button class="btn btn-primary" style="margin:5px; float:right; width:8%" (click)="processTransaction(accId.value, transAmt.value, 'deposit')">Deposit</button>
 </div>
 
 <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="accounts">

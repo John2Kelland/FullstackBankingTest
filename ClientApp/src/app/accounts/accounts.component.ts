@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
     selector: 'app-accounts',
@@ -27,8 +27,8 @@ export class AccountsComponent {
 
   public addAccount(accId: string, accName: string, initBal: string) {
     this.Http.post(this.BaseUrl + 'useraccounts', new String("AccountID:" + accId + ",AccountName:" + accName + ",InitialBalance:" + initBal), this.HttpOptions)
-      .subscribe(result => { alert("User account successfully added!"); }, error => {
-        alert("There was an error adding the account.");
+      .subscribe(result => { alert("Account successfully added!"); }, error => {
+        alert(error.error);
         console.error(error);
       }
     );
@@ -38,8 +38,8 @@ export class AccountsComponent {
 
   public updateAccount(accId: string, accName: string) {
     this.Http.put(this.BaseUrl + 'useraccounts', new String("AccountID:" + accId + ",AccountName:" + accName), this.HttpOptions)
-      .subscribe(result => { alert("User account successfully updated!") }, error => {
-        alert("There was an error updating the account.");
+      .subscribe(result => { alert("Account successfully updated!") }, error => {
+        alert(error.error);
         console.error(error);
       }
     );
@@ -48,9 +48,9 @@ export class AccountsComponent {
   }
 
   public deleteAccount(accId: string) {
-    this.Http.delete(this.BaseUrl + 'useraccounts', { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'body': accId }) })
-      .subscribe(result => { alert("User account successfully deleted!") }, error => {
-        alert("There was an error deleting the account.");
+    this.Http.delete(this.BaseUrl + 'useraccounts/' + accId)
+      .subscribe(result => { alert("Account successfully deleted!") }, error => {
+        alert(error.error);
         console.error(error);
       }
     );
@@ -62,12 +62,13 @@ export class AccountsComponent {
     (document.getElementById('accId') as HTMLInputElement).value = "";
     (document.getElementById('accName') as HTMLInputElement).value = "";
     (document.getElementById('initBal') as HTMLInputElement).value = "";
+    location.reload();
   }
 }
 
 interface UserAccount {
   username: string
-  accountId: number;
+  accountId: string;
   accountName: string;
   balance: number;
 }
