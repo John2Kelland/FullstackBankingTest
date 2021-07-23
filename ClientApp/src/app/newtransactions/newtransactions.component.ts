@@ -2,13 +2,13 @@ import { Component, Inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
-  selector: 'app-transactions',
-  templateUrl: './transactions.component.html',
-  styleUrls: ['./transactions.component.scss']
+  selector: 'app-newtransactions',
+  templateUrl: './newtransactions.component.html',
+  styleUrls: ['./newtransactions.component.scss']
 })
 
-export class TransactionsComponent {
-  public accounts: UserAccount[];
+export class NewTransactionsComponent {
+  public accounts: Account[];
   public Http: HttpClient;
   public BaseUrl: string;
   public HttpOptions = {
@@ -21,8 +21,8 @@ export class TransactionsComponent {
     this.Http = http;
     this.BaseUrl = baseUrl;
 
-    http.get<UserAccount[]>(baseUrl + 'useraccounts')
-      .subscribe(result => { this.accounts = result; }, error => console.error(error));
+    http.get<Account[]>(baseUrl + 'useraccounts')
+      .subscribe(result => { this.accounts = result; }, error => { console.error(error); alert(error.error); });
   }
 
   public processTransaction(accId: string, transAmt: string, transType: string) {
@@ -31,11 +31,10 @@ export class TransactionsComponent {
         alert(error.error);
         console.error(error);
       }
-      );
+    );
   }
 }
-
-interface UserAccount {
+interface Account {
   username: string
   accountId: string;
   accountName: string;

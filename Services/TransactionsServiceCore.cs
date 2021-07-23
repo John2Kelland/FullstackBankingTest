@@ -19,8 +19,9 @@ namespace Radancy_Bank_Challenge.Services
             UserAccount userAccount = GlobalData.UserAccounts.Where(x => x.Username.Equals(GlobalData.ActiveSystemUser) && x.AccountId.Equals(accountId)).FirstOrDefault();
 
             if (userAccount == null) { errorMessage = GlobalConstants.ErrorMessages.INVALIDACCOUNTID; return transactionSuccessful; }
-            if (!ValidateMaximumWithdrawal(userAccount.Balance, withdrawal)) { errorMessage = GlobalConstants.ErrorMessages.EXCEEDSMAXIMUMWITHDRAWALPERCENTAGE; return transactionSuccessful; }
-            if (!ValidateMinimumAccountBalance(userAccount.Balance - withdrawal)) { errorMessage = GlobalConstants.ErrorMessages.INSUFFICIENTACCOUNTBALANCE; return transactionSuccessful; }
+            UserAccount testAccount = new UserAccount(userAccount.Username, userAccount.AccountId, userAccount.AccountName, userAccount.Balance);
+            if (!ValidateMaximumWithdrawal(testAccount, withdrawal)) { errorMessage = GlobalConstants.ErrorMessages.EXCEEDSMAXIMUMWITHDRAWALPERCENTAGE; return transactionSuccessful; }
+            if (!UserAccountServiceCore.ValidateSufficientBalance(testAccount)) { errorMessage = GlobalConstants.ErrorMessages.INSUFFICIENTACCOUNTBALANCE; return transactionSuccessful; }
 
             // update the balance of the account being acted upon
             try
@@ -55,14 +56,9 @@ namespace Radancy_Bank_Challenge.Services
 
         #region Transaction Validation Rules
 
-        public static bool ValidateMinimumAccountBalance(double remainingBalance)
+        public static bool ValidateMaximumWithdrawal(UserAccount userAccount, double withdrawal)
         {
-            return remainingBalance >= GlobalConstants.MinimumAccountBalance;
-        }
-
-        public static bool ValidateMaximumWithdrawal(double accountBalance, double withdrawal)
-        {
-            return withdrawal <= GlobalConstants.MaximumWithdrawalPercentage*accountBalance;
+            return withdrawal <= GlobalConstants.MaximumWithdrawalPercentage*userAccount.Balance;
         }
 
         public static bool ValidateMaximumDeposit(double deposit)
