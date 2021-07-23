@@ -64,13 +64,13 @@ namespace Radancy_Bank_Challenge.Controllers
             string accountId = details[0].Split("AccountID:")[1];
             string accountName = details[1].Split("AccountName:")[1];
 
-            if (UserAccountServiceCore.UpdateUserAccount(accountId, accountName))
+            if (UserAccountServiceCore.UpdateUserAccount(accountId, accountName, out string errorMessage))
             {
                 return Ok();
             }
             else
             {
-                return BadRequest(GlobalConstants.ErrorMessages.UNEXPECTEDACCOUNTUPDATEFAILURE);
+                return BadRequest(errorMessage);
             }
         }
 
@@ -79,13 +79,13 @@ namespace Radancy_Bank_Challenge.Controllers
         {
             if (String.IsNullOrEmpty(GlobalData.ActiveSystemUser)) { return BadRequest(GlobalConstants.ErrorMessages.UNAUTHORIZEDACTIONATTEMPT); }
 
-            if (UserAccountServiceCore.DeleteUserAccount("teststring"))
+            if (UserAccountServiceCore.DeleteUserAccount("teststring", out string errorMessage))
             {
                 return Ok();
             }
             else
             {
-                return BadRequest(GlobalConstants.ErrorMessages.UNEXPECTEDACCOUNTDELETIONFAIlURE);
+                return BadRequest(errorMessage);
             }
         }
     }

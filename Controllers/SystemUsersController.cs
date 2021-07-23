@@ -71,13 +71,13 @@ namespace Radancy_Bank_Challenge.Controllers
 
             if (!SystemUserServiceCore.ValidateSystemUserEmail(email)) { return BadRequest(GlobalConstants.ErrorMessages.INVALIDEMAILFORMAT); }
 
-            if (SystemUserServiceCore.AddSystemUser(email, username, password))
+            if (SystemUserServiceCore.AddSystemUser(email, username, password, out string errorMessage))
             {
                 return Ok();
             } 
             else
             {
-                return BadRequest(GlobalConstants.ErrorMessages.UNEXPECTEDNEWUSERFAILURE);
+                return BadRequest(errorMessage);
             }
         }
     }

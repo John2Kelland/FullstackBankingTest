@@ -39,30 +39,36 @@ namespace Radancy_Bank_Challenge.Services
             return accountAdded;
         }
 
-        public static bool UpdateUserAccount(string accountId, string accountName)
+        public static bool UpdateUserAccount(string accountId, string accountName, out string errorMessage)
         {
-            bool accountUpdated = false;
+            bool accountUpdated = false; errorMessage = "";
 
             try
             {
                 GlobalData.UserAccounts.Where(x => x.Username.Equals(GlobalData.ActiveSystemUser) && x.AccountId.Equals(accountId)).ToList().ForEach(y => { y.AccountName = accountName; });
                 accountUpdated = true;
             }
-            catch { }
+            catch 
+            {
+                errorMessage = GlobalConstants.ErrorMessages.UNEXPECTEDACCOUNTUPDATEFAILURE;
+            }
 
             return accountUpdated;
         }
 
-        public static bool DeleteUserAccount(string accountId)
+        public static bool DeleteUserAccount(string accountId, out string errorMessage)
         {
-            bool accountDeleted = false;
+            bool accountDeleted = false; errorMessage = "";
 
             try
             {
                 GlobalData.UserAccounts.RemoveAll(x => x.Username.Equals(GlobalData.ActiveSystemUser) && x.AccountId.Equals(accountId));
                 accountDeleted = true;
             }
-            catch { }
+            catch 
+            {
+                errorMessage = GlobalConstants.ErrorMessages.UNEXPECTEDACCOUNTDELETIONFAIlURE;
+            }
 
             return accountDeleted;
         }

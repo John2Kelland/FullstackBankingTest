@@ -11,9 +11,9 @@ namespace Radancy_Bank_Challenge.Services
     {
         #region System User Modification Services
 
-        public static bool AddSystemUser(string email, string username, string password)
+        public static bool AddSystemUser(string email, string username, string password, out string errorMessage)
         {
-            bool userAdded = true;
+            bool userAdded = false; errorMessage = "";
 
             SystemUser newSystemUser = new SystemUser(email, username, password);
 
@@ -29,10 +29,11 @@ namespace Radancy_Bank_Challenge.Services
                     List<SystemUser> systemUsers = new List<SystemUser>() { newSystemUser };
                     GlobalData.SystemUsers = systemUsers;
                 }
+                userAdded = true;
             }
             catch
             {
-                userAdded = false;
+                errorMessage = GlobalConstants.ErrorMessages.UNEXPECTEDNEWUSERFAILURE;
             }
 
             return userAdded;
