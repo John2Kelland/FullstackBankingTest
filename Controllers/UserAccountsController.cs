@@ -42,15 +42,34 @@ namespace Radancy_Bank_Challenge.Controllers
 
             string accountId = details[0].Split("AccountID:")[1];
             string accountName = details[1].Split("AccountName:")[1];
-            double initialBalance = Convert.ToDouble(details[2].Split("InitialBalance:")[1]);
+            string initialBalance = details[2].Split("InitialBalance:")[1];
 
-            if (UserAccountServiceCore.AddUserAccount(accountId, accountName, initialBalance, out string errorMessage))
+            if (String.IsNullOrEmpty(accountId) || String.IsNullOrEmpty(accountName))
             {
-                return Ok();
+                return BadRequest(GlobalConstants.ErrorMessages.REQUIREDFIELDSMISSING);
+            }
+
+            if (String.IsNullOrEmpty(initialBalance))
+            {
+                if (UserAccountServiceCore.AddUserAccount(accountId, accountName, null, out string errorMessage))
+                {
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest(errorMessage);
+                }
             }
             else
             {
-                return BadRequest(errorMessage);
+                if (UserAccountServiceCore.AddUserAccount(accountId, accountName, Convert.ToDouble(initialBalance), out string errorMessage))
+                {
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest(errorMessage);
+                }
             }
         }
 
@@ -64,6 +83,22 @@ namespace Radancy_Bank_Challenge.Controllers
             string accountId = details[0].Split("AccountID:")[1];
             string accountName = details[1].Split("AccountName:")[1];
 
+            if (String.IsNullOrEmpty(accountId)) { return BadRequest(GlobalConstants.ErrorMessages.REQUIREDFIELDSMISSING); }
+
+            if (accountName.Equals("deleterequest")) 
+            {
+                if (this.Delete(accountId, out string deleteErrorMessage))
+                {
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest(deleteErrorMessage);
+                }
+            }
+
+            if (String.IsNullOrEmpty(accountName)) { return BadRequest(GlobalConstants.ErrorMessages.REQUIREDFIELDSMISSING); }
+
             if (UserAccountServiceCore.UpdateUserAccount(accountId, accountName, out string errorMessage))
             {
                 return Ok();
@@ -74,19 +109,21 @@ namespace Radancy_Bank_Challenge.Controllers
             }
         }
 
-        [HttpDelete]
-        public IActionResult Delete(string accountId)
+        public bool Delete(string accId, out string errorMessage)
         {
-            if (String.IsNullOrEmpty(GlobalData.ActiveSystemUser)) { return BadRequest(GlobalConstants.ErrorMessages.UNAUTHORIZEDACTIONATTEMPT); }
+            bool deletionSuccessful = false; errorMessage = "";
 
-            if (UserAccountServiceCore.DeleteUserAccount("teststring", out string errorMessage))
+            if (UserAccountServiceCore.DeleteUserAccount(accId, out string deletionServiceErrorMessage))
             {
-                return Ok();
+                deletionSuccessful = true;
             }
             else
             {
-                return BadRequest(errorMessage);
+                errorMessage = deletionServiceErrorMessage;
+                deletionSuccessful = false;
             }
+
+            return deletionSuccessful;
         }
     }
 }

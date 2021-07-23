@@ -21,6 +21,7 @@ namespace Radancy_Bank_Challenge.Services
             if (userAccount == null) { errorMessage = GlobalConstants.ErrorMessages.INVALIDACCOUNTID; return transactionSuccessful; }
             UserAccount testAccount = new UserAccount(userAccount.Username, userAccount.AccountId, userAccount.AccountName, userAccount.Balance);
             if (!ValidateMaximumWithdrawal(testAccount, withdrawal)) { errorMessage = GlobalConstants.ErrorMessages.EXCEEDSMAXIMUMWITHDRAWALPERCENTAGE; return transactionSuccessful; }
+            testAccount.Balance -= withdrawal;
             if (!UserAccountServiceCore.ValidateSufficientBalance(testAccount)) { errorMessage = GlobalConstants.ErrorMessages.INSUFFICIENTACCOUNTBALANCE; return transactionSuccessful; }
 
             // update the balance of the account being acted upon

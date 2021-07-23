@@ -40,8 +40,15 @@ namespace Radancy_Bank_Challenge.Controllers
             string[] details = transactionDetails.Split(",");
 
             string accountId = details[0].Split("AccountID:")[1];
-            double transactionAmount = Convert.ToDouble(details[1].Split("TransactionAmount:")[1]);
+            string transactionAmountString = details[1].Split("TransactionAmount:")[1];
             string transactionType = details[2].Split("TransactionType:")[1];
+
+            if (String.IsNullOrEmpty(accountId) || String.IsNullOrEmpty(transactionAmountString))
+            {
+                return BadRequest(GlobalConstants.ErrorMessages.REQUIREDFIELDSMISSING);
+            }
+
+            double transactionAmount = Convert.ToDouble(transactionAmountString);
 
             if (transactionType.Equals("withdrawal"))
             {

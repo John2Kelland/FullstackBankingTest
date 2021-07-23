@@ -50,6 +50,7 @@ namespace Radancy_Bank_Challenge.Utilities
             public static string EXCEEDSMAXIMUMDEPOSIT { get { return "A deposit cannot exceed $10,000."; } }
             public static string UNRECOGNIZEDTRANSACTIONTYPE { get { return "The transaction type was not recognized. Please try again, and if the error persists, feel free to contact our support desk!"; } }
             public static string INVALIDACCOUNTID { get { return "Please specify an existing account ID. Thank you!"; } }
+            public static string REQUIREDFIELDSMISSING { get { return "Please populate all required fields before attempting that action. Thank you!"; } }
         }
     }
 }

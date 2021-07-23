@@ -31,15 +31,14 @@ export class UsersComponent {
     this.Http.post(this.BaseUrl + 'systemusers', new String("Email:" + email + ",Username:" + username + ",Password:" + password), this.HttpOptions)
       .subscribe(result => {
         alert("Profile successfully added!");
+        (document.getElementById('email') as HTMLInputElement).value = "";
+        (document.getElementById('usernm') as HTMLInputElement).value = "";
+        (document.getElementById('passwd') as HTMLInputElement).value = "";
       }, error => {
         alert(error.error);
         console.error(error);
       }
-     );
-
-    (document.getElementById('email') as HTMLInputElement).value = "";
-    (document.getElementById('usernm') as HTMLInputElement).value = "";
-    (document.getElementById('passwd') as HTMLInputElement).value = "";
+    );
   }
 
   public accessSystemProfile(username: string, password: string) {
@@ -50,6 +49,7 @@ export class UsersComponent {
         } else {
           alert("Access successfully granted!");
         }
+        location.href = location.href;
       }, error => {
         alert(error.error);
         console.error(error);

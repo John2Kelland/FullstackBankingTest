@@ -11,11 +11,19 @@ namespace Radancy_Bank_Challenge.Services
     {
         #region User Account Modification Services
 
-        public static bool AddUserAccount(string accountId, string accountName, double initialBalance, out string errorMessage)
+        public static bool AddUserAccount(string accountId, string accountName, double? initialBalance, out string errorMessage)
         {
             bool accountAdded = false; errorMessage = "";
 
-            UserAccount newUserAccount = new UserAccount(GlobalData.ActiveSystemUser, accountId, accountName, initialBalance);
+            UserAccount newUserAccount;
+            if (initialBalance == null)
+            {
+                newUserAccount = new UserAccount(GlobalData.ActiveSystemUser, accountId, accountName);
+            }
+            else
+            {
+                newUserAccount = new UserAccount(GlobalData.ActiveSystemUser, accountId, accountName, initialBalance.Value);
+            }
 
             if (!ValidateSufficientBalance(newUserAccount)) { errorMessage = GlobalConstants.ErrorMessages.INSUFFICIENTACCOUNTBALANCE; return accountAdded; }
             if (!ValidateUniqueAccountID(newUserAccount)) { errorMessage = GlobalConstants.ErrorMessages.DUPLICATEACCOUNTID; return accountAdded; }

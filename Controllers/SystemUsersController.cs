@@ -43,6 +43,11 @@ namespace Radancy_Bank_Challenge.Controllers
             string username = details[0].Split("Username:")[1];
             string password = details[1].Split("Password:")[1];
 
+            if (String.IsNullOrEmpty(username) || String.IsNullOrEmpty(password))
+            {
+                return BadRequest(GlobalConstants.ErrorMessages.REQUIREDFIELDSMISSING);
+            }
+
             if (username.Equals("signoutrequest") && password.Equals("signoutrequest"))
             {
                 GlobalData.ActiveSystemUser = "";
@@ -68,6 +73,11 @@ namespace Radancy_Bank_Challenge.Controllers
             string email = details[0].Split("Email:")[1];
             string username = details[1].Split("Username:")[1];
             string password = details[2].Split("Password:")[1];
+
+            if (String.IsNullOrEmpty(email) || String.IsNullOrEmpty(username) || String.IsNullOrEmpty(password))
+            {
+                return BadRequest(GlobalConstants.ErrorMessages.REQUIREDFIELDSMISSING);
+            }
 
             if (!SystemUserServiceCore.ValidateSystemUserEmail(email)) { return BadRequest(GlobalConstants.ErrorMessages.INVALIDEMAILFORMAT); }
 

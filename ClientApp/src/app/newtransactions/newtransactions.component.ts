@@ -28,14 +28,16 @@ export class NewTransactionsComponent {
 
   public processTransaction(accId: string, transAmt: string, transType: string) {
     this.Http.put(this.BaseUrl + 'transactions', new String("AccountID:" + accId + ",TransactionAmount:" + transAmt + ",TransactionType:" + transType), this.HttpOptions)
-      .subscribe(result => { alert("Transaction successfully processed!"); }, error => {
+      .subscribe(result => {
+        alert("Transaction successfully processed!");
+        (document.getElementById('accId') as HTMLInputElement).value = "";
+        (document.getElementById('transAmt') as HTMLInputElement).value = "";
+        location.href = location.href;
+      }, error => {
         alert(error.error);
         console.error(error);
       }
     );
-
-    (document.getElementById('accId') as HTMLInputElement).value = "";
-    (document.getElementById('transAmt') as HTMLInputElement).value = "";
   }
 }
 interface Account {

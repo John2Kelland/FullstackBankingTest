@@ -27,41 +27,48 @@ export class AccountsComponent {
 
   public addAccount(accId: string, accName: string, initBal: string) {
     this.Http.post(this.BaseUrl + 'useraccounts', new String("AccountID:" + accId + ",AccountName:" + accName + ",InitialBalance:" + initBal), this.HttpOptions)
-      .subscribe(result => { alert("Account successfully added!"); }, error => {
+      .subscribe(result => {
+        alert("Account successfully added!");
+        (document.getElementById('accId') as HTMLInputElement).value = "";
+        (document.getElementById('accName') as HTMLInputElement).value = "";
+        (document.getElementById('initBal') as HTMLInputElement).value = "";
+        location.href = location.href;
+      }, error => {
         alert(error.error);
         console.error(error);
       }
     );
-
-    this.clearFields();
   }
 
   public updateAccount(accId: string, accName: string) {
     this.Http.put(this.BaseUrl + 'useraccounts', new String("AccountID:" + accId + ",AccountName:" + accName), this.HttpOptions)
-      .subscribe(result => { alert("Account successfully updated!") }, error => {
+      .subscribe(result => {
+        alert("Account successfully updated!");
+        (document.getElementById('accId') as HTMLInputElement).value = "";
+        (document.getElementById('accName') as HTMLInputElement).value = "";
+        (document.getElementById('initBal') as HTMLInputElement).value = "";
+        location.href = location.href;
+      }, error => {
         alert(error.error);
         console.error(error);
       }
     );
-
-    this.clearFields();
   }
 
   public deleteAccount(accId: string) {
-    this.Http.delete(this.BaseUrl + 'useraccounts/' + accId)
-      .subscribe(result => { alert("Account successfully deleted!") }, error => {
+
+    this.Http.put(this.BaseUrl + 'useraccounts', new String("AccountID:" + accId + ",AccountName:deleterequest"), this.HttpOptions)
+      .subscribe(result => {
+        alert("Account successfully deleted!");
+        (document.getElementById('accId') as HTMLInputElement).value = "";
+        (document.getElementById('accName') as HTMLInputElement).value = "";
+        (document.getElementById('initBal') as HTMLInputElement).value = "";
+        location.href = location.href;
+      }, error => {
         alert(error.error);
         console.error(error);
       }
     );
-
-    this.clearFields();
-  }
-
-  public clearFields() {
-    (document.getElementById('accId') as HTMLInputElement).value = "";
-    (document.getElementById('accName') as HTMLInputElement).value = "";
-    (document.getElementById('initBal') as HTMLInputElement).value = "";
   }
 }
 
