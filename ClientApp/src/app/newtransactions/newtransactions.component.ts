@@ -1,5 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-newtransactions',
@@ -32,6 +33,9 @@ export class NewTransactionsComponent {
         console.error(error);
       }
     );
+
+    (document.getElementById('accId') as HTMLInputElement).value = "";
+    (document.getElementById('transAmt') as HTMLInputElement).value = "";
   }
 }
 interface Account {

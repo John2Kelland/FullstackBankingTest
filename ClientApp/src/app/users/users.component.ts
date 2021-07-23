@@ -58,8 +58,6 @@ export class UsersComponent {
 
     (document.getElementById('sgnusernm') as HTMLInputElement).value = "";
     (document.getElementById('sgnpasswd') as HTMLInputElement).value = "";
-
-    location.reload(false);
   }
 }
 

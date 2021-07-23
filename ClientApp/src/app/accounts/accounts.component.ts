@@ -62,7 +62,6 @@ export class AccountsComponent {
     (document.getElementById('accId') as HTMLInputElement).value = "";
     (document.getElementById('accName') as HTMLInputElement).value = "";
     (document.getElementById('initBal') as HTMLInputElement).value = "";
-    location.reload();
   }
 }
 
