@@ -1,0 +1,41 @@
+<h1>Transactions</h1>
+
+<br />
+
+<p>
+  Welcome to the transaction management page! This region of the application automatically retrieves and displays any accounts tied to the active system user,
+  and it provides functionality for processing withdrawals and deposits for a specified account. The Account ID and Transaction Amount are both required to
+  perform either transaction.
+  <br /><br />
+  <b>Relevant Business Rules:</b> <br />
+  An account cannot have less than $100 at any time. <br />
+  A user cannot withdraw more than 90% of their total balance from an account in a single transaction. <br />
+  A user cannot deposit more than $10,000 in a single transaction.
+</p>
+
+<br />
+<div class="input-group" style="width:100%">
+  <input type="number" min="0" style="margin:5px; margin-left:0px; width:36%" id="accId" name="accountId" placeholder="*Account ID" #accId />
+  <input type="number" min="0" style="margin:5px; width:36%" id="transAmt" name="transactionAmount" placeholder="*Transaction Amount ($)" #transAmt />
+  <button class="btn btn-primary" style="margin:5px; float:right; width:8%" (click)="processTransaction(accId.value, transAmt.value, 'withdrawal')">Withdraw</button>
+  <button class="btn btn-primary" style="margin:5px; float:right; width:8%" (click)="processTransaction(accId.value, transAmt.value, 'deposit')">Deposit</button>
+</div>
+
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="accounts">
+  <thead>
+    <tr>
+      <th>Username</th>
+      <th>Account ID</th>
+      <th>Account Name</th>
+      <th>Balance ($)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let account of accounts">
+      <td>{{ account.username }}</td>
+      <td>{{ account.accountId }}</td>
+      <td>{{ account.accountName }}</td>
+      <td>{{ account.balance }}</td>
+    </tr>
+  </tbody>
+</table>

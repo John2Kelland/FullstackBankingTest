@@ -1,0 +1,41 @@
+<h1>Accounts</h1>
+
+<br />
+
+<p>Welcome to the account management page! This region of the application automatically retrieves and displays any accounts tied to the active system user,
+  and it provides functionality for adding, updating, and deleting those accounts. When adding an account, the Account ID and Account Name are required, and
+  the balance will default to $100 unless otherwise specified. When updating an account, the Account ID and Account Name are required, and only the value of
+  the Account Name can actually be updated. When deleting an account, only the Account ID is required, and the other input fields will be ignored.
+  <br /><br />
+  <b>Relevant Business Rules:</b> <br />
+  An account cannot have less than $100 at any time.
+</p>
+
+<br />
+<div class="input-group" style="width:100%">
+  <input type="number" min="0" style="margin:5px; margin-left:0px; width:21%" id="accId" name="accountId" placeholder="*Account ID" #accId />
+  <input type="text" style="margin:5px; width:21%" id="accName" name="accountName" placeholder="Account Name" #accName />
+  <input type="number" min="100" style="margin:5px; width:21%" id="initBal" name="initialBalance" placeholder="Initial Balance ($)" #initBal />
+  <button type="submit" class="btn btn-primary" style="margin:5px; float:right; width:8%" (click)="addAccount(accId.value, accName.value, initBal.value)">Add</button>
+  <button type="submit" class="btn btn-primary" style="margin:5px; float:right; width:8%" (click)="updateAccount(accId.value, accName.value)">Update</button>
+  <button type="submit" class="btn btn-primary" style="margin-left:auto; margin:5px; width:8%" (click)="deleteAccount(accId.value)">Delete</button>
+</div>
+
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="accounts">
+  <thead>
+    <tr>
+      <th>Username</th>
+      <th>Account ID</th>
+      <th>Account Name</th>
+      <th>Balance ($)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let account of accounts">
+      <td>{{ account.username }}</td>
+      <td>{{ account.accountId }}</td>
+      <td>{{ account.accountName }}</td>
+      <td>{{ account.balance }}</td>
+    </tr>
+  </tbody>
+</table>

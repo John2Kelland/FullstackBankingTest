@@ -1,0 +1,45 @@
+<style>
+
+#activeUserMsg {
+  border-top-style: hidden;
+  border-right-style: hidden;
+  border-left-style: hidden;
+  border-bottom-style: hidden;
+  background-color: antiquewhite;
+  text-align: center
+}
+
+</style>
+
+<h1>Profile</h1>
+
+<br />
+
+<p>Welcome to the system user management page! This region of the application provides functionality for registering new users
+  or accessing your existing profile. The message box below will reflect your current sign-in status, and remember that accessing your
+  profile is required to perform any bank account operations or transactions. Whether you are a first-time or returning user, please
+  enjoy navigating the site, and thank you for using Kelland Financial Services!
+  <br /> <br />
+</p>
+
+<div class="input-group" style="width:100%">
+  <input type="text" style="margin:5px; margin-left:0px; width:100%" id="activeUserMsg" name="activeUserMessage" border:none readonly />
+</div>
+
+<p><br /><br />Sign in to manage your accounts:</p>
+<div class="input-group" style="width:100%">
+  <input type="text" style="margin:5px; margin-left:0px; width:42%" id="sgnusernm" name="username" placeholder="*Username" #signinusername />
+  <input type="password" style="margin:5px; margin-left:15px; width:42%" id="sgnpasswd" name="password" placeholder="*Password" minlength="8" maxlength="20" #signinpassword />
+  <button class="btn btn-primary" style="margin:5px; margin-right:0px; float:right; width:12.5%" (click)="accessSystemProfile(signinusername.value, signinpassword.value)">Sign In</button>
+</div>
+<div class="input-group" style="width:100%">
+  <button class="btn btn-primary" style="margin:5px; margin-left:0px; float:right; width:12.5%" (click)="accessSystemProfile('signoutrequest','signoutrequest')">Sign Out</button>
+</div>
+
+<p><br /><br />Don't have an account?  Join the Kelland Financial Services family today!</p>
+<div class="input-group" style="width:100%">
+  <input type="text" style="margin:5px; margin-left:0px; width:28%" id="email" name="emailAddress" placeholder="*Email Address" #email />
+  <input type="text" style="margin:5px; width:28%" id="usernm" name="username" placeholder="*Username" #username />
+  <input type="password" style="margin:5px; width:28%" id="passwd" name="password" placeholder="*Password" minlength="8" maxlength="20" #password />
+  <button class="btn btn-primary" style="margin:5px; margin-right:0px; float:right; width:12.5%" (click)="addSystemProfile(email.value, username.value, password.value)">Register</button>
+</div>
